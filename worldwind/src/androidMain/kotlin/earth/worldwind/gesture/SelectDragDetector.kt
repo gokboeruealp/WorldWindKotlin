@@ -107,8 +107,9 @@ open class SelectDragDetector(protected val wwd: WorldWindow) : SimpleOnGestureL
         val callback = callback ?: return false
         return runBlocking {
             val (renderable, position) = awaitPickResult(false)
-            if (renderable is Renderable && position != null) {
-                callback.onRenderableDoubleTap(renderable, position)
+            if (position != null) {
+                if (renderable is Renderable) callback.onRenderableDoubleTap(renderable, position)
+                else callback.onTerrainDoubleTap(position)
                 wwd.requestRedraw()
                 true
             } else false
